@@ -1,14 +1,74 @@
 import streamlit as st #all streamlit commands will be available through the "st" alias
 import rag_chatbot_lib as glib #reference to local lib script
+ 
+def reddit_style():
+    st.markdown(
+        """
+        <style>
+        /* Main page layout */
+        .main {
+            background-color: #4d4949; /* Black background */
+        }
 
+        /* Chat messages */
+        .stChatMessage {
+            background-color: #FFFFFF; /* Dark grey for chat messages */
+            border-radius: 10px;
+            border: 1px solid #FF4500; /* Reddit's orangered color */
+            margin-bottom: 10px;
+            padding: 10px;
+            color: #FFFFFF; /* White text */
+        }
 
-st.set_page_config(page_title="RAG Chatbot") #HTML title
+        /* User chat message */
+        .stChatMessage[data-role="user"] {
+            background-color: #FF4500; /* Reddit's orangered color */
+            color: #FFFFFF; /* White text */
+        }
+
+        /* Assistant chat message */
+        .stChatMessage[data-role="assistant"] {
+            background-color: #4F4F4F; /* Slightly lighter grey */
+            color: #FFD700; /* Gold text */
+        }
+
+        /* Chat input box */
+        .stTextInput>div>div>input {
+            border-radius: 20px;
+            border: 2px solid #FF4500; /* Reddit's orangered color */
+            background-color: #2F2F2F; /* Dark grey */
+            color: #FFFFFF; /* White text */
+        }
+
+        /* Page title */
+        h1 {
+            color: #FF4500; /* Reddit's orangered color */
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+st.set_page_config(page_title="UBC Reddit Chatbot") #HTML title
+reddit_style()
 st.title("RAG Chatbot") #page title
+
+with st.container():
+    st.write("---")
+    left_c, mid_c, right_c = st.columns(3)
+    with left_c:
+        st.header("AHHH")
+        st.write("left")
+    with mid_c:
+        st.header("ooooh")
+        st.write("mid")
+    with right_c:
+        st.header("ooooh")
+        st.write("mid")
 
 
 if 'memory' not in st.session_state: #see if the memory hasn't been created yet
     st.session_state.memory = glib.get_memory() #initialize the memory
-
 
 if 'chat_history' not in st.session_state: #see if the chat history hasn't been created yet
     st.session_state.chat_history = [] #initialize the chat history
