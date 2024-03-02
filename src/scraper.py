@@ -59,7 +59,7 @@ class SubredditLatest(object):
 
 #driver code
 
-date = datetime.datetime(2024, 2, 20)
+date = datetime.datetime(2023, 9, 1)
 
 submissions = SubredditLatest("ubc",date)()
 data = []
