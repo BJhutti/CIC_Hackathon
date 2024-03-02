@@ -7,7 +7,7 @@ def reddit_style():
         <style>
         /* Main page layout */
         .main {
-            background-color: #4d4949; /* Black background */
+            background-color: #FFFFFF; /* Black background */
         }
 
         /* Chat messages */
@@ -40,6 +40,11 @@ def reddit_style():
             color: #FFFFFF; /* White text */
         }
 
+        /* Column */
+        .leftC {
+            color: #00000;
+        }
+
         /* Page title */
         h1 {
             color: #FF4500; /* Reddit's orangered color */
@@ -54,17 +59,24 @@ reddit_style()
 st.title("RAG Chatbot") #page title
 
 with st.container():
-    st.write("---")
-    left_c, mid_c, right_c = st.columns(3)
-    with left_c:
-        st.header("AHHH")
-        st.write("left")
-    with mid_c:
-        st.header("ooooh")
-        st.write("mid")
-    with right_c:
-        st.header("ooooh")
-        st.write("mid")
+    input_text2 = st.chat_input("Chat with your bot here") #display a chat input box
+    input_text = st.text_area("Chat with your bot here", height = 5) #display a chat input box
+    go_button = st.button("Go", type="primary") #display a primary button
+
+
+
+# with st.container():
+#     st.write("---")
+#     left_c, mid_c, right_c = st.columns([5,5,5])
+#     with left_c:
+#         st.header("AHHH")
+#         st.write("left")
+#     with mid_c:
+#         st.header("ooooooooooooooooooooooooooooooooo")
+#         st.write("mid")
+#     with right_c:
+#         st.header("ooooh")
+#         st.write("mid")
 
 
 if 'memory' not in st.session_state: #see if the memory hasn't been created yet
@@ -87,9 +99,9 @@ for message in st.session_state.chat_history: #loop through the chat history
 
 
 
-input_text = st.chat_input("Chat with your bot here") #display a chat input box
+#input_text = st.chat_input("Chat with your bot here") #display a chat input box
 
-if input_text: #run the code in this if block after the user submits a chat message
+if go_button: #run the code in this if block after the user submits a chat message
     
     with st.chat_message("user"): #display a user chat message
         st.markdown(input_text) #renders the user's latest message
