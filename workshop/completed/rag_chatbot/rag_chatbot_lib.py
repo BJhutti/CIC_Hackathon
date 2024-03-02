@@ -8,6 +8,7 @@ from langchain.indexes import VectorstoreIndexCreator
 from langchain.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import JSONLoader
 
 
 
@@ -43,8 +44,14 @@ def get_index(): #creates and returns an in-memory vector store to be used in th
     
     pdf_path = "2022-Shareholder-Letter.pdf" #assumes local PDF file with this name
 
-    loader = PyPDFLoader(file_path=pdf_path) #load the pdf file
-    
+    #loader = PyPDFLoader(file_path=pdf_path) #load the pdf file
+
+    loader = JSONLoader(
+        file_path='src/data/reddit_data.json',
+        jq_schema='.content',
+        text_content=True,
+        json_lines=False)# load the json file
+
     text_splitter = RecursiveCharacterTextSplitter( #create a text splitter
         separators=["\n\n", "\n", ".", " "], #split chunks at (1) paragraph, (2) line, (3) sentence, or (4) word, in that order
         chunk_size=1000, #divide into 1000-character chunks using the separators above
