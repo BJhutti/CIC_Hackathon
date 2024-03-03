@@ -6,7 +6,7 @@ reddit = praw.Reddit(client_id='AHfet6Qwq09Yuxd5eib_wQ',
                      client_secret='ifgFCgxVZpMhKRD426jWJ_WEQLb8FA',
                      user_agent='windows:UBCStudentSimulator:v0.0.1 (by u/Frosty_Can_2796)')
 
-##hi 
+
 
 
 class SubredditLatest(object):
@@ -59,31 +59,41 @@ class SubredditLatest(object):
 
 #driver code
 
-date = datetime.datetime(2023, 9, 1)
+date = datetime.datetime(2024, 1, 1)
 
 submissions = SubredditLatest("ubc",date)()
 data = []
 
-for submission in submissions:
-    # Create a dictionary for the submission
-    submission_dict = {k: str(getattr(submission, k)) for k in ["title","author", "author_flair_text", "likes", "ups", "downs", "upvote_ratio", "selftext"]}
+with open('src\\data\\reddit_data.json', 'r', encoding='utf-8') as f:
+    try:
+        data = json.load(f)
+    except:
+        data = []
 
-    # Get the comments
-    submission.comments.replace_more(limit=None)
-    comments = submission.comments.list()
+try:
+    for submission in submissions:
+        # Create a dictionary for the submission
+        submission_dict = {k: str(getattr(submission, k)) for k in ["title","author", "author_flair_text", "likes", "ups", "downs", "upvote_ratio", "selftext"]}
+        # Get the comments
+        submission.comments.replace_more(limit=None)
+        comments = submission.comments.list()
 
-    # Create a list of dictionaries for the comments
-    # will do recursive comment append in the future TODO
-    comments_list = [comment.body for comment in comments]
+        # Create a list of dictionaries for the comments
+        # will do recursive comment append in the future TODO
+        comments_list = [comment.body for comment in comments]
 
-    # Add the comments to the submission dictionary
-    submission_dict["comments"] = comments_list
+        # Add the comments to the submission dictionary
+        submission_dict["comments"] = comments_list
 
-    # Add the submission dictionary to the data list
-    data.append(submission_dict)
+        # Add the submission dictionary to the data list
+        data.append(submission_dict)
+        print(submission_dict)
+except:
+    with open('src\\data\\reddit_data.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
 # Write the data to a JSON file
-with open('./data/reddit_data.json', 'w', encoding='utf-8') as f:
+with open('src\\data\\reddit_data.json', 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=4)
 
 
