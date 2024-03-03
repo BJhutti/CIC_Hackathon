@@ -55,12 +55,17 @@ def reddit_style():
     )
 
 st.set_page_config(page_title="UBC Reddit Chatbot") #HTML title
-reddit_style()
-st.title("RAG Chatbot") #page title
+st.title("UBC Reddit Chatbot") #page title
 
 with st.container():
-    input_text2 = st.chat_input("Chat with your bot here") #display a chat input box
-    input_text = st.text_area("Chat with your bot here", height = 5) #display a chat input box
+    reddit_style()
+    st.markdown(
+        
+    )
+    st.title("Title")
+    input_text = st.text_area("Write title here", height = 1) #display a chat input box
+    st.title("Description") 
+    input_text2 = st.text_area("Chat with your bot here", height = 5) #display a chat input box
     go_button = st.button("Go", type="primary") #display a primary button
 
 
@@ -104,9 +109,9 @@ for message in st.session_state.chat_history: #loop through the chat history
 if go_button: #run the code in this if block after the user submits a chat message
     
     with st.chat_message("user"): #display a user chat message
-        st.markdown(input_text) #renders the user's latest message
+        st.markdown(str(input_text) + str(input_text2)) #renders the user's latest message
     
-    st.session_state.chat_history.append({"role":"user", "text":input_text}) #append the user's latest message to the chat history
+    st.session_state.chat_history.append({"role":"user", "text": str(input_text) + str(input_text2)}) #append the user's latest message to the chat history
     
     chat_response = glib.get_rag_chat_response(input_text=input_text, memory=st.session_state.memory, index=st.session_state.vector_index,) #call the model through the supporting library
     
