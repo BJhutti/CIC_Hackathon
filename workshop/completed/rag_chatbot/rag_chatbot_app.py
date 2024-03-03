@@ -1,6 +1,8 @@
 import streamlit as st #all streamlit commands will be available through the "st" alias
 import rag_chatbot_lib as glib #reference to local lib script
- 
+import chatbot_lib as clib
+from langchain.memory import ConversationSummaryBufferMemory
+
 def reddit_style():
     st.markdown(
         """
@@ -55,9 +57,17 @@ def reddit_style():
     )
 
 st.set_page_config(page_title="UBC Reddit Chatbot") #HTML title
-st.title("UBC Reddit Chatbot") #page title
 reddit_style()
-st.image('logo.png', width = 80)
+
+col1, col2 = st.columns([1, 3])
+
+# Column for the image
+with col1:
+    st.image("logo.png", width=100)  # Adjust the width as necessary
+
+# Column for the title
+with col2:
+    st.title("UBC Reddit Chatbot")
 
 with st.container(border = True):
     st.title("Title")
@@ -112,10 +122,13 @@ with st.container(border = True):
         
         st.session_state.chat_history.append({"role":"user", "text": str(input_text) + str(input_text2)}) #append the user's latest message to the chat history
         
-        chat_response = glib.get_rag_chat_response(input_text=input_text, memory=st.session_state.memory, index=st.session_state.vector_index,) #call the model through the supporting library
-        
+        chat_response = clib.get_chat_response("Rephrase this prompt 5 different ways as social media user: " + glib.get_rag_chat_response(input_text=str(input_text)+str(input_text2), memory=st.session_state.memory, index=st.session_state.vector_index,),
+                                           clib.get_memory()) #call the model through the supporting library
+    
         with st.chat_message("assistant"): #display a bot chat message
             st.markdown(chat_response) #display bot's latest response
         
         st.session_state.chat_history.append({"role":"assistant", "text":chat_response}) #append the bot's latest message to the chat history
         
+
+    
