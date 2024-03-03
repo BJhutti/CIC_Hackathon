@@ -57,8 +57,9 @@ def reddit_style():
 st.set_page_config(page_title="UBC Reddit Chatbot") #HTML title
 st.title("UBC Reddit Chatbot") #page title
 reddit_style()
+st.image('logo.png', width = 80)
 
-with st.container():
+with st.container(border = True):
     st.title("Title")
     input_text = st.text_area("Write title here", height = 1) #display a chat input box
     st.title("Description") 
@@ -95,25 +96,26 @@ if 'vector_index' not in st.session_state: #see if the vector index hasn't been 
 
 
 #Re-render the chat history (Streamlit re-runs this script, so need this to preserve previous chat messages)
-for message in st.session_state.chat_history: #loop through the chat history
-    with st.chat_message(message["role"]): #renders a chat line for the given role, containing everything in the with block
-        st.markdown(message["text"]) #display the chat content
+# for message in st.session_state.chat_history: #loop through the chat history
+#     with st.chat_message(message["role"]): #renders a chat line for the given role, containing everything in the with block
+#         st.markdown(message["text"]) #display the chat content
 
 
 
 #input_text = st.chat_input("Chat with your bot here") #display a chat input box
 
-if go_button: #run the code in this if block after the user submits a chat message
-    
-    #with st.chat_message("user"): #display a user chat message
-        #st.markdown(str(input_text) + str(input_text2)) #renders the user's latest message
-    
-    st.session_state.chat_history.append({"role":"user", "text": str(input_text) + str(input_text2)}) #append the user's latest message to the chat history
-    
-    chat_response = glib.get_rag_chat_response(input_text=input_text, memory=st.session_state.memory, index=st.session_state.vector_index,) #call the model through the supporting library
-    
-    with st.chat_message("assistant"): #display a bot chat message
-        st.markdown(chat_response) #display bot's latest response
-    
-    st.session_state.chat_history.append({"role":"assistant", "text":chat_response}) #append the bot's latest message to the chat history
-    
+with st.container(border = True):
+    if go_button: #run the code in this if block after the user submits a chat message
+        
+        #with st.chat_message("user"): #display a user chat message
+            #st.markdown(str(input_text) + str(input_text2)) #renders the user's latest message
+        
+        st.session_state.chat_history.append({"role":"user", "text": str(input_text) + str(input_text2)}) #append the user's latest message to the chat history
+        
+        chat_response = glib.get_rag_chat_response(input_text=input_text, memory=st.session_state.memory, index=st.session_state.vector_index,) #call the model through the supporting library
+        
+        with st.chat_message("assistant"): #display a bot chat message
+            st.markdown(chat_response) #display bot's latest response
+        
+        st.session_state.chat_history.append({"role":"assistant", "text":chat_response}) #append the bot's latest message to the chat history
+        
